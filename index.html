@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Generador de GNP INFORMA</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css" />
+</head>
+
+<body>
+    <div class="container-fluid px-1 py-5 mx-auto">
+        <div class="row d-flex justify-content-center">
+            <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
+                <h1>GNP INFORMA</h1>
+                <p class="blue-text">Generador de GNP INFORMA</p>
+                <div class="card">
+                    <form class="form-card" onsubmit="return false;">
+                        <div class="row justify-content-between text-left">
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label for="numero_poliza" class="form-control-label px-3">Número de Póliza:</label>
+                                <input type="text" id="numero_poliza" required/>
+                            </div>
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label class="form-control-label px-3" for="numero_poliza">Tipo de
+                                    Póliza:</label><select id="tipo_poliza" name="tipo_poliza">
+                                    <option value="Vision Plus">Vision Plus</option>
+                                    <option value="Dotal">Dotal</option>
+                                    <option value="Proyecta">Proyecta</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row justify-content-between text-left">
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label for="nombre_contratante" class="form-control-label px-3">Nombre del contratante:</label>
+                                <input type="text" id="nombre_contratante" required/>
+                            </div>
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label for="fecha_vigencia" class="form-control-label px-3">Fecha de vigencia:</label>
+                                <input type="date" id="fecha_vigencia" required/>
+                            </div>
+                        </div>
+                        <div class="row justify-content-between text-left">
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label for="monto_pagar" class="form-control-label px-3">Monto a pagar:</label>
+                                <input type="text" id="monto_pagar" required/>
+                            </div>
+                        </div>
+                        <div class="row justify-content-between text-left">
+                            <div class="form-group col-12 flex-column d-flex">
+                                <input class="btn-block btn-primary" type="button" value="Generar Texto" onclick="generarTexto()" />
+                            </div>
+                        </div>
+                    </form>
+
+                    <div id="texto_generado"></div>
+
+                    <button onclick="copiarTexto()">Copiar Texto</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generarTexto() {
+            var numero_poliza = document.getElementById("numero_poliza").value;
+            var tipo_poliza = document.getElementById("tipo_poliza").value;
+            var tipoPolizaFormateada = tipo_poliza
+                .toLowerCase()
+                .replace(/\b\w/g, function (l) {
+                    return l.toUpperCase();
+                });
+            var nombre_contratante =
+                document.getElementById("nombre_contratante").value;
+            var nombreContratanteFormateado = nombre_contratante
+                .toLowerCase()
+                .replace(/\b\w/g, function (l) {
+                    return l.toUpperCase();
+                });
+            var fecha_vigencia = document.getElementById("fecha_vigencia").value;
+            var fechaVigenciaArray = fecha_vigencia.split("-");
+            var fechaVigenciaFormateada =
+                fechaVigenciaArray[2] +
+                "/" +
+                fechaVigenciaArray[1] +
+                "/" +
+                fechaVigenciaArray[0];
+            var monto_pagar = document.getElementById("monto_pagar").value;
+
+            var texto =
+                "GNP INFORMA:\nLa póliza " +
+                numero_poliza +
+                " " +
+                tipoPolizaFormateada +
+                " de " +
+                nombreContratanteFormateado +
+                " inicia vigencia el " +
+                fechaVigenciaFormateada +
+                " por $" +
+                monto_pagar +
+                ", favor de coordinar el pago con su Asesor Financiero.";
+            document.getElementById("texto_generado").innerText = texto;
+        }
+
+        function copiarTexto() {
+            var textoGenerado = document.getElementById("texto_generado");
+            var range = document.createRange();
+            range.selectNode(textoGenerado);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand("copy");
+            window.getSelection().removeAllRanges();
+            alert("Texto copiado al portapapeles");
+        }
+    </script>
+</body>
+
+</html>
